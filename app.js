@@ -9,25 +9,10 @@ const buttonDay3Element = document.querySelector(".day3");
 const buttonDay4Element = document.querySelector(".day4");
 const buttonDay5Element = document.querySelector(".day5");
 
-const day1 = {}; const day2 = {}; const day3 = {}; const day4 = {}; const day5 = {};
-const uniqDays = [];
-const mass = [];
+const weatherByDate = {};
 
-day1.temperature = {
-  unit : "celsius"
-}
-day2.temperature = {
-  unit : "celsius"
-}
-day3.temperature = {
-  unit : "celsius"
-}
-day4.temperature = {
-  unit : "celsius"
-}
-day5.temperature = {
-  unit : "celsius"
-}
+
+
 
 const KELVIN = 273;
 const key = "119330c3e5a71515ea22dd8eee604c01";
@@ -54,33 +39,49 @@ function showError(error){
 function getWeather(latitude, longitude){
     let api = `http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${key}`;
 
-    console.log(api);
+    //console.log(api);
     
     fetch(api)
         .then(function(response){
-            let data = response.json();
-            return data;
+          let data = response.json();
+          return data;
         })
         .then(function(data){
-            day1.name = data.list[0].dt_txt.slice(0, -9).split("-").reverse().join(".");
-            day1.temperature.value = Math.floor(data.list[0].main.temp - KELVIN);
-            day1.description = data.list[0].weather[0].description;
-            day1.iconId = data.list[0].weather[0].icon;
-            day1.city = data.city.name;
-            day1.country = data.city.country;
+          getWeatherByDate(data.list);
+
+          weatherByDate.city = data.city.name;
+          weatherByDate.country = data.city.country;
         })
         .then(function(){
-            displayWeather();
+          displayWeather();
         });
 }
 
+let keyDay = '';
+function getWeatherByDate(data) {
+  for (const oneData of data) {
+  const nameDay = oneData.dt_txt.slice(0, -9);
+  keyDay = nameDay;
+  if (!weatherByDate.hasOwnProperty(nameDay)) {
+    const weather = new Object();
+    weather.temperature = oneData.main.temp;
+    weather.description = oneData.weather[0].description;
+    weather.iconId = oneData.weather[0].icon;
+    weatherByDate[nameDay] = weather;
+  }
+  }  
+  console.log(weatherByDate);
+};
+
+
 function displayWeather(){
-  buttonDay1Element.innerHTML = `<button><p>${day1.name}</p></button>`;
-  iconElement.innerHTML = `<img src="icons/${day1.iconId}.png"/>`;
-  tempElement.innerHTML = `${day1.temperature.value}°<span>C</span>`;
-  descElement.innerHTML = day1.description;
-  locationElement.innerHTML = `${day1.city}, ${day1.country}`;
-}
+  const normalizedFormatDate = keyDay.split("-").reverse().join(".");
+  buttonDay1Element.innerHTML = `<button><p>${normalizedFormatDate}</p></button>`;
+  iconElement.innerHTML = `<img src="icons/${weatherByDate[keyDay].iconId}.png"/>`;
+  tempElement.innerHTML = `${weatherByDate[keyDay].temperature}°<span>C</span>`;
+  descElement.innerHTML = weatherByDate[keyDay].description;
+  locationElement.innerHTML = `${weatherByDate.city}, ${weatherByDate.country}`;
+};
 /*
 function filteredUniqDays(mass){
   const filteredDay = mass.filter((day) => {
