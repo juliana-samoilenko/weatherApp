@@ -3,11 +3,14 @@ const tempElement = document.querySelector(".temperature-value p");
 const descElement = document.querySelector(".temperature-description p");
 const locationElement = document.querySelector(".location p");
 const notificationElement = document.querySelector(".notification");
+
 const buttonDay1Element = document.querySelector(".day1");
 const buttonDay2Element = document.querySelector(".day2");
 const buttonDay3Element = document.querySelector(".day3");
 const buttonDay4Element = document.querySelector(".day4");
 const buttonDay5Element = document.querySelector(".day5");
+const buttons = document.querySelector(".buttons-days").children;
+console.log(buttons[0]);
 
 const weatherByDate = {};
 let activeDayDate = new Date();
@@ -63,7 +66,7 @@ function getWeather(latitude, longitude){
           weatherByDate.country = data.city.country;
         })
         .then(function(){
-          getAllDay();
+          createNameButton();
           renderDayWeather();
         });
 }
@@ -83,30 +86,30 @@ function getWeatherByDate(data) {
   }
 };
 
-function getAllDay() {
+function createNameButton() {
   allDays = Object.keys(weatherByDate);
   allDays = allDays.slice(0, -2);
-  console.log(allDays);
+
+  for (let i = 0; i < 5; i++) {
+    let currentDay = allDays[i].split("-").reverse().join(".");;
+    let currentButton = buttons[i];
+    currentButton.innerHTML = `<button><p>${currentDay}</p></button>`;
+  }
 }
 
 function renderDayWeather(){
   const normalizedFormatDate = keyDay.split("-").reverse().join(".");
-  buttonDay1Element.innerHTML = `<button><p>${normalizedFormatDate}</p></button>`;
+  //buttonDay1Element.innerHTML = `<button><p>${normalizedFormatDate}</p></button>`;
   iconElement.innerHTML = `<img src="icons/${weatherByDate[keyDay].iconId}.png"/>`;
   tempElement.innerHTML = `${weatherByDate[keyDay].temperature}°<span>C</span>`;
   descElement.innerHTML = weatherByDate[keyDay].description;
   locationElement.innerHTML = `${weatherByDate.city}, ${weatherByDate.country}`;
 };
-/*
-function filteredUniqDays(mass){
-  const filteredDay = mass.filter((day) => {
-    let currentDate = day.dt_txt.slice(0, -9).split("-").reverse().join(".");
-    if (!uniqDates.includes(currentDate)) {
-      uniqDates = [...uniqDates, ...[currentDate]];
-    }
 
-    return uniqDays;
-}*/
+function normalizedFormatDate(date) {
+  date = date.split("-").reverse().join(".");
+};
+
 /*
 function celsiusToFahrenheit(temperature){
     return (temperature * 9/5) + 32;
