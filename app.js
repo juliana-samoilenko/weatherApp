@@ -67,6 +67,7 @@ function getWeather(latitude, longitude){
         })
         .then(function(){
           createNameButton();
+          addAttributeDiv();
           renderDayWeather();
         });
 }
@@ -94,6 +95,13 @@ function createNameButton() {
     let currentDay = allDays[i].split("-").reverse().join(".");;
     let currentButton = buttons[i];
     currentButton.innerHTML = `<button><p>${currentDay}</p></button>`;
+  }
+}
+
+function addAttributeDiv() {
+  for (let i = 0; i < 5; i++) {
+    let currentButton = buttons[i];
+    currentButton.setAttribute('date', allDays[i]);
   }
 }
 
