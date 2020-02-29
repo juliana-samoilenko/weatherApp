@@ -10,9 +10,19 @@ const buttonDay4Element = document.querySelector(".day4");
 const buttonDay5Element = document.querySelector(".day5");
 
 const weatherByDate = {};
+let activeDayDate = new Date();
+activeDayDate = getToday(activeDayDate);
+let allDays = [];
 
-
-
+function getToday(today) {
+  let dayDate = today.getDate();
+  let monthDate = today.getMonth() + 1;
+  if (monthDate < 10) {
+    monthDate = '0' + monthDate;
+  }
+  let yearDate = today.getFullYear();
+  return `${yearDate}-${monthDate}-${dayDate}`;
+};
 
 const KELVIN = 273;
 const key = "119330c3e5a71515ea22dd8eee604c01";
@@ -53,7 +63,8 @@ function getWeather(latitude, longitude){
           weatherByDate.country = data.city.country;
         })
         .then(function(){
-          displayWeather();
+          getAllDay();
+          renderDayWeather();
         });
 }
 
@@ -64,17 +75,21 @@ function getWeatherByDate(data) {
   keyDay = nameDay;
   if (!weatherByDate.hasOwnProperty(nameDay)) {
     const weather = new Object();
-    weather.temperature = oneData.main.temp;
+    weather.temperature = Math.floor(oneData.main.temp - KELVIN);
     weather.description = oneData.weather[0].description;
     weather.iconId = oneData.weather[0].icon;
     weatherByDate[nameDay] = weather;
   }
-  }  
-  console.log(weatherByDate);
+  }
 };
 
+function getAllDay() {
+  allDays = Object.keys(weatherByDate);
+  allDays = allDays.slice(0, -2);
+  console.log(allDays);
+}
 
-function displayWeather(){
+function renderDayWeather(){
   const normalizedFormatDate = keyDay.split("-").reverse().join(".");
   buttonDay1Element.innerHTML = `<button><p>${normalizedFormatDate}</p></button>`;
   iconElement.innerHTML = `<img src="icons/${weatherByDate[keyDay].iconId}.png"/>`;
