@@ -3,6 +3,7 @@ const tempElement = document.querySelector(".temperature-value p");
 const descElement = document.querySelector(".temperature-description p");
 const locationElement = document.querySelector(".location p");
 const notificationElement = document.querySelector(".notification");
+const currentActiveDate = document.querySelector('.active');
 
 const buttonDay1Element = document.querySelector(".day1");
 const buttonDay2Element = document.querySelector(".day2");
@@ -11,24 +12,26 @@ const buttonDay4Element = document.querySelector(".day4");
 const buttonDay5Element = document.querySelector(".day5");
 const divs = document.querySelector(".buttons-days").children;
 
+const KELVIN = 273;
+const key = "119330c3e5a71515ea22dd8eee604c01";
 const weatherByDate = {};
-//let activeDayDate = new Date();
-//activeDayDate = getToday(activeDayDate);
+let today = new Date();
+today = getToday(today);
 let allDays = [];
-let keyDay = '';
+let dateCurrentDay = '';
 
-/*function getToday(today) {
-  let dayDate = today.getDate();
-  let monthDate = today.getMonth() + 1;
+function getToday(date) {
+  let dayDate = date.getDate();
+  if (dayDate < 10) {
+    dayDate = '0' + dayDate;
+  }
+  let monthDate = date.getMonth() + 1;
   if (monthDate < 10) {
     monthDate = '0' + monthDate;
   }
-  let yearDate = today.getFullYear();
+  let yearDate = date.getFullYear();
   return `${yearDate}-${monthDate}-${dayDate}`;
-};*/
-
-const KELVIN = 273;
-const key = "119330c3e5a71515ea22dd8eee604c01";
+};
 
 if ('geolocation' in navigator){
   navigator.geolocation.getCurrentPosition(setPosition, showError);
@@ -65,21 +68,20 @@ function getWeather(latitude, longitude) {
     .then(function(){
       createNameButton();
       addAttributeDiv();
-      renderFirstDay();
+      renderByDay(today);
     });
 }
-
 
 function getWeatherByDate(data) {
   for (const oneData of data) {
   const nameDay = oneData.dt_txt.slice(0, -9);
   if (!weatherByDate.hasOwnProperty(nameDay)) {
-    keyDay = nameDay;
+    dateCurrentDay = nameDay;
     const weather = new Object();
     weather.temperature = Math.floor(oneData.main.temp - KELVIN);
     weather.description = oneData.weather[0].description;
     weather.iconId = oneData.weather[0].icon;
-    weatherByDate[nameDay] = weather;
+    weatherByDate[dateCurrentDay] = weather;
     }
   }
 };
@@ -89,9 +91,9 @@ function createNameButton() {
   allDays = allDays.slice(0, -2);
 
   for (let i = 0; i < 5; i++) {
-    let currentDay = allDays[i].split("-").reverse().join(".");;
-    let currentButton = divs[i];
-    currentButton.innerHTML = `<button><p>${currentDay}</p></button>`;
+    const currentDay = allDays[i].split("-").reverse().join(".");;
+    const currentDiv = divs[i];
+    currentDiv.innerHTML = `<button><p>${currentDay}</p></button>`;
   }
 }
 
@@ -102,28 +104,50 @@ function addAttributeDiv() {
   }
 }
 
-function renderFirstDay() {
-  iconElement.innerHTML = `<img src="icons/${weatherByDate[keyDay].iconId}.png"/>`;
-  tempElement.innerHTML = `${weatherByDate[keyDay].temperature}°<span>C</span>`;
-  descElement.innerHTML = weatherByDate[keyDay].description;
+const renderByDay = (dateCurrentDay) => {
+  iconElement.innerHTML = `<img src="icons/${weatherByDate[dateCurrentDay].iconId}.png"/>`;
+  tempElement.innerHTML = `${weatherByDate[dateCurrentDay].temperature}°<span>C</span>`;
+  descElement.innerHTML = weatherByDate[dateCurrentDay].description;
   locationElement.innerHTML = `${weatherByDate.city}, ${weatherByDate.country}`;
 };
 
-const renderByDay = () => {
-  const targetDiv = event.currentTarget;
-  keyDay = targetDiv.getAttribute('date');
-  
-  iconElement.innerHTML = `<img src="icons/${weatherByDate[keyDay].iconId}.png"/>`;
-  tempElement.innerHTML = `${weatherByDate[keyDay].temperature}°<span>C</span>`;
-  descElement.innerHTML = weatherByDate[keyDay].description;
-
-  const currentActiveDate = document.querySelector('.active');
+const changeCurrentActiveDay = (target) => {
   currentActiveDate.classList.remove('active');
-  targetDiv.classList.add('active');
+  const newActiveDate = target;
+  newActiveDate.classList.add('active');
 };
 
-buttonDay1Element.addEventListener("click", renderByDay);
-buttonDay2Element.addEventListener("click", renderByDay);
-buttonDay3Element.addEventListener("click", renderByDay);
-buttonDay4Element.addEventListener("click", renderByDay);
-buttonDay5Element.addEventListener("click", renderByDay);
+buttonDay1Element.addEventListener("click", function() {
+  const targetDiv = event.currentTarget;
+  dateCurrentDay = targetDiv.getAttribute('date');
+  changeCurrentActiveDay(targetDiv);
+  renderByDay(dateCurrentDay);
+});
+
+buttonDay2Element.addEventListener("click", function() {
+  const targetDiv = event.currentTarget;
+  dateCurrentDay = targetDiv.getAttribute('date');
+  changeCurrentActiveDay(targetDiv);
+  renderByDay(dateCurrentDay);
+});
+
+buttonDay3Element.addEventListener("click", function() {
+  const targetDiv = event.currentTarget;
+  dateCurrentDay = targetDiv.getAttribute('date');
+  changeCurrentActiveDay(targetDiv);
+  renderByDay(dateCurrentDay);
+});
+
+buttonDay4Element.addEventListener("click", function() {
+  const targetDiv = event.currentTarget;
+  dateCurrentDay = targetDiv.getAttribute('date');
+  changeCurrentActiveDay(targetDiv);
+  renderByDay(dateCurrentDay);
+});
+
+buttonDay5Element.addEventListener("click", function() {
+  const targetDiv = event.currentTarget;
+  dateCurrentDay = targetDiv.getAttribute('date');
+  changeCurrentActiveDay(targetDiv);
+  renderByDay(dateCurrentDay);
+});
