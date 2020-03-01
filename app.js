@@ -9,15 +9,15 @@ const buttonDay2Element = document.querySelector(".day2");
 const buttonDay3Element = document.querySelector(".day3");
 const buttonDay4Element = document.querySelector(".day4");
 const buttonDay5Element = document.querySelector(".day5");
-const buttons = document.querySelector(".buttons-days").children;
-console.log(buttons[0]);
+const divs = document.querySelector(".buttons-days").children;
 
 const weatherByDate = {};
-let activeDayDate = new Date();
-activeDayDate = getToday(activeDayDate);
+//let activeDayDate = new Date();
+//activeDayDate = getToday(activeDayDate);
 let allDays = [];
+let keyDay = '';
 
-function getToday(today) {
+/*function getToday(today) {
   let dayDate = today.getDate();
   let monthDate = today.getMonth() + 1;
   if (monthDate < 10) {
@@ -25,65 +25,62 @@ function getToday(today) {
   }
   let yearDate = today.getFullYear();
   return `${yearDate}-${monthDate}-${dayDate}`;
-};
+};*/
 
 const KELVIN = 273;
 const key = "119330c3e5a71515ea22dd8eee604c01";
 
-if('geolocation' in navigator){
-    navigator.geolocation.getCurrentPosition(setPosition, showError);
-}else{
-    notificationElement.style.display = "block";
-    notificationElement.innerHTML = "<p>Browser doesn't Support Geolocation</p>";
+if ('geolocation' in navigator){
+  navigator.geolocation.getCurrentPosition(setPosition, showError);
+} else {
+  notificationElement.style.display = "block";
+  notificationElement.innerHTML = "<p>Browser doesn't Support Geolocation</p>";
 }
 
 function setPosition(position){
-    let latitude = position.coords.latitude;
-    let longitude = position.coords.longitude;
+  let latitude = position.coords.latitude;
+  let longitude = position.coords.longitude;
     
-    getWeather(latitude, longitude);
+  getWeather(latitude, longitude);
 }
 
 function showError(error){
-    notificationElement.style.display = "block";
-    notificationElement.innerHTML = `<p> ${error.message} </p>`;
+  notificationElement.style.display = "block";
+  notificationElement.innerHTML = `<p> ${error.message} </p>`;
 }
 
-function getWeather(latitude, longitude){
-    let api = `http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${key}`;
-
-    //console.log(api);
+function getWeather(latitude, longitude) {
+  let api = `http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${key}`;
     
-    fetch(api)
-        .then(function(response){
-          let data = response.json();
-          return data;
-        })
-        .then(function(data){
-          getWeatherByDate(data.list);
-
-          weatherByDate.city = data.city.name;
-          weatherByDate.country = data.city.country;
-        })
-        .then(function(){
-          createNameButton();
-          addAttributeDiv();
-          renderDayWeather();
-        });
+  fetch(api)
+    .then(function(response){
+      let data = response.json();
+      return data;
+    })
+    .then(function(data){
+      getWeatherByDate(data.list)
+      weatherByDate.city = data.city.name;
+      weatherByDate.country = data.city.country;
+    })
+    .then(function(){
+      createNameButton();
+      addAttributeDiv();
+      renderFirstDay();
+    });
 }
 
-let keyDay = '';
+
 function getWeatherByDate(data) {
   for (const oneData of data) {
   const nameDay = oneData.dt_txt.slice(0, -9);
-  keyDay = nameDay;
   if (!weatherByDate.hasOwnProperty(nameDay)) {
+    keyDay = nameDay;
     const weather = new Object();
     weather.temperature = Math.floor(oneData.main.temp - KELVIN);
     weather.description = oneData.weather[0].description;
     weather.iconId = oneData.weather[0].icon;
     weatherByDate[nameDay] = weather;
-  }
+    }
   }
 };
 
@@ -93,48 +90,40 @@ function createNameButton() {
 
   for (let i = 0; i < 5; i++) {
     let currentDay = allDays[i].split("-").reverse().join(".");;
-    let currentButton = buttons[i];
+    let currentButton = divs[i];
     currentButton.innerHTML = `<button><p>${currentDay}</p></button>`;
   }
 }
 
 function addAttributeDiv() {
   for (let i = 0; i < 5; i++) {
-    let currentButton = buttons[i];
-    currentButton.setAttribute('date', allDays[i]);
+    let currentDivs = divs[i];
+    currentDivs.setAttribute('date', allDays[i]);
   }
 }
 
-function renderDayWeather(){
-  const normalizedFormatDate = keyDay.split("-").reverse().join(".");
-  //buttonDay1Element.innerHTML = `<button><p>${normalizedFormatDate}</p></button>`;
+function renderFirstDay() {
   iconElement.innerHTML = `<img src="icons/${weatherByDate[keyDay].iconId}.png"/>`;
   tempElement.innerHTML = `${weatherByDate[keyDay].temperature}°<span>C</span>`;
   descElement.innerHTML = weatherByDate[keyDay].description;
   locationElement.innerHTML = `${weatherByDate.city}, ${weatherByDate.country}`;
 };
 
-function normalizedFormatDate(date) {
-  date = date.split("-").reverse().join(".");
+const renderByDay = () => {
+  const targetDiv = event.currentTarget;
+  keyDay = targetDiv.getAttribute('date');
+  
+  iconElement.innerHTML = `<img src="icons/${weatherByDate[keyDay].iconId}.png"/>`;
+  tempElement.innerHTML = `${weatherByDate[keyDay].temperature}°<span>C</span>`;
+  descElement.innerHTML = weatherByDate[keyDay].description;
+
+  const currentActiveDate = document.querySelector('.active');
+  currentActiveDate.classList.remove('active');
+  targetDiv.classList.add('active');
 };
 
-/*
-function celsiusToFahrenheit(temperature){
-    return (temperature * 9/5) + 32;
-}
-
-tempElement.addEventListener("click", function(){
-    if(weather.temperature.value === undefined) return;
-    
-    if(weather.temperature.unit == "celsius"){
-        let fahrenheit = celsiusToFahrenheit(weather.temperature.value);
-        fahrenheit = Math.floor(fahrenheit);
-        
-        tempElement.innerHTML = `${fahrenheit}°<span>F</span>`;
-        weather.temperature.unit = "fahrenheit";
-    }else{
-        tempElement.innerHTML = `${weather.temperature.value}°<span>C</span>`;
-        weather.temperature.unit = "celsius"
-    }
-});*/
-
+buttonDay1Element.addEventListener("click", renderByDay);
+buttonDay2Element.addEventListener("click", renderByDay);
+buttonDay3Element.addEventListener("click", renderByDay);
+buttonDay4Element.addEventListener("click", renderByDay);
+buttonDay5Element.addEventListener("click", renderByDay);
