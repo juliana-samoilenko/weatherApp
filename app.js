@@ -3,7 +3,7 @@ const tempElement = document.querySelector(".temperature-value p");
 const descElement = document.querySelector(".temperature-description p");
 const locationElement = document.querySelector(".location p");
 const notificationElement = document.querySelector(".notification");
-const currentActiveDate = document.querySelector('.active');
+
 
 const buttonDay1Element = document.querySelector(".day1");
 const buttonDay2Element = document.querySelector(".day2");
@@ -113,10 +113,10 @@ const renderByDay = (dateCurrentDay) => {
 };
 
 const changeCurrentActiveDay = (target) => {
+  let currentActiveDate = document.querySelector('.active');
   currentActiveDate.classList.remove('active');
-  // [3]
-  const newActiveDate = target;
-  newActiveDate.classList.add('active');
+  currentActiveDate = target;
+  currentActiveDate.classList.add('active');
 };
 
 buttonDay1Element.addEventListener("click", function(event) {
