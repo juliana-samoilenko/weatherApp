@@ -5,11 +5,6 @@ const locationElement = document.querySelector(".location p");
 const notificationElement = document.querySelector(".notification");
 
 const divs = document.querySelector(".buttons-days").children;
-const buttonDay1Element = document.querySelector(".day1");
-const buttonDay2Element = document.querySelector(".day2");
-const buttonDay3Element = document.querySelector(".day3");
-const buttonDay4Element = document.querySelector(".day4");
-const buttonDay5Element = document.querySelector(".day5");
 const buttons = [...divs];
 
 const KELVIN = 273;
