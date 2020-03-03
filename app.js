@@ -4,13 +4,13 @@ const descElement = document.querySelector(".temperature-description p");
 const locationElement = document.querySelector(".location p");
 const notificationElement = document.querySelector(".notification");
 
-
+const divs = document.querySelector(".buttons-days").children;
 const buttonDay1Element = document.querySelector(".day1");
 const buttonDay2Element = document.querySelector(".day2");
 const buttonDay3Element = document.querySelector(".day3");
 const buttonDay4Element = document.querySelector(".day4");
 const buttonDay5Element = document.querySelector(".day5");
-const divs = document.querySelector(".buttons-days").children;
+const buttons = [...divs];
 
 const KELVIN = 273;
 const API_KEY = "119330c3e5a71515ea22dd8eee604c01";
@@ -119,37 +119,11 @@ const changeCurrentActiveDay = (target) => {
   currentActiveDate.classList.add('active');
 };
 
-buttonDay1Element.addEventListener("click", function(event) {
-  const targetDiv = event.currentTarget;
-  dateCurrentDay = targetDiv.getAttribute('date');
-  changeCurrentActiveDay(targetDiv);
-  renderByDay(dateCurrentDay);
-});
-
-buttonDay2Element.addEventListener("click", function(event) {
-  const targetDiv = event.currentTarget;
-  dateCurrentDay = targetDiv.getAttribute('date');
-  changeCurrentActiveDay(targetDiv);
-  renderByDay(dateCurrentDay);
-});
-
-buttonDay3Element.addEventListener("click", function(event) {
-  const targetDiv = event.currentTarget;
-  dateCurrentDay = targetDiv.getAttribute('date');
-  changeCurrentActiveDay(targetDiv);
-  renderByDay(dateCurrentDay);
-});
-
-buttonDay4Element.addEventListener("click", function(event) {
-  const targetDiv = event.currentTarget;
-  dateCurrentDay = targetDiv.getAttribute('date');
-  changeCurrentActiveDay(targetDiv);
-  renderByDay(dateCurrentDay);
-});
-
-buttonDay5Element.addEventListener("click", function(event) {
-  const targetDiv = event.currentTarget;
-  dateCurrentDay = targetDiv.getAttribute('date');
-  changeCurrentActiveDay(targetDiv);
-  renderByDay(dateCurrentDay);
+buttons.forEach((button) => {
+  button.addEventListener("click", function(event) {
+    const targetDiv = event.currentTarget;
+    dateCurrentDay = targetDiv.getAttribute('date');
+    changeCurrentActiveDay(targetDiv);
+    renderByDay(dateCurrentDay);
+  });
 });
