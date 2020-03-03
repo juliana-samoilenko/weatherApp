@@ -119,36 +119,35 @@ const changeCurrentActiveDay = (target) => {
   newActiveDate.classList.add('active');
 };
 
-buttonDay1Element.addEventListener("click", function() {
-  // [2] - target vs currentTarget
+buttonDay1Element.addEventListener("click", function(event) {
   const targetDiv = event.currentTarget;
   dateCurrentDay = targetDiv.getAttribute('date');
   changeCurrentActiveDay(targetDiv);
   renderByDay(dateCurrentDay);
 });
 
-buttonDay2Element.addEventListener("click", function() {
+buttonDay2Element.addEventListener("click", function(event) {
   const targetDiv = event.currentTarget;
   dateCurrentDay = targetDiv.getAttribute('date');
   changeCurrentActiveDay(targetDiv);
   renderByDay(dateCurrentDay);
 });
 
-buttonDay3Element.addEventListener("click", function() {
+buttonDay3Element.addEventListener("click", function(event) {
   const targetDiv = event.currentTarget;
   dateCurrentDay = targetDiv.getAttribute('date');
   changeCurrentActiveDay(targetDiv);
   renderByDay(dateCurrentDay);
 });
 
-buttonDay4Element.addEventListener("click", function() {
+buttonDay4Element.addEventListener("click", function(event) {
   const targetDiv = event.currentTarget;
   dateCurrentDay = targetDiv.getAttribute('date');
   changeCurrentActiveDay(targetDiv);
   renderByDay(dateCurrentDay);
 });
 
-buttonDay5Element.addEventListener("click", function() {
+buttonDay5Element.addEventListener("click", function(event) {
   const targetDiv = event.currentTarget;
   dateCurrentDay = targetDiv.getAttribute('date');
   changeCurrentActiveDay(targetDiv);
