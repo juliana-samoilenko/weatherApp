@@ -15,6 +15,8 @@ const divs = document.querySelector(".buttons-days").children;
 const KELVIN = 273;
 const API_KEY = "119330c3e5a71515ea22dd8eee604c01";
 const weatherByDate = {};
+let city;
+let country;
 let today = new Date();
 today = getToday(today);
 let allDays = [];
@@ -52,9 +54,9 @@ function showError(error){
   notificationElement.innerHTML = `<p> ${error.message} </p>`;
 }
 
-function getWeather(latitude, longitude) {
+function getWeather(latitude, longitude) {    
   let api = `//api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`;
-    
+
   fetch(api)
     .then(function(response){
       let data = response.json();
@@ -62,8 +64,8 @@ function getWeather(latitude, longitude) {
     })
     .then(function(data){
       getWeatherByDate(data.list)
-      weatherByDate.city = data.city.name;
-      weatherByDate.country = data.city.country;
+      city = data.city.name;
+      country = data.city.country;
     })
     .then(function(){
       createNameButton();
@@ -88,7 +90,6 @@ function getWeatherByDate(data) {
 
 function createNameButton() {
   allDays = Object.keys(weatherByDate);
-  allDays = allDays.slice(0, -2);
 
   for (let i = 0; i < 5; i++) {
     const currentDay = allDays[i].split("-").reverse().join(".");;
@@ -108,7 +109,7 @@ const renderByDay = (dateCurrentDay) => {
   iconElement.innerHTML = `<img src="icons/${weatherByDate[dateCurrentDay].iconId}.png"/>`;
   tempElement.innerHTML = `${weatherByDate[dateCurrentDay].temperature}°<span>C</span>`;
   descElement.innerHTML = weatherByDate[dateCurrentDay].description;
-  locationElement.innerHTML = `${weatherByDate.city}, ${weatherByDate.country}`;
+  locationElement.innerHTML = `${city}, ${country}`;
 };
 
 const changeCurrentActiveDay = (target) => {
