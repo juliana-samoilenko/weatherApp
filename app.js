@@ -13,7 +13,7 @@ const buttonDay5Element = document.querySelector(".day5");
 const divs = document.querySelector(".buttons-days").children;
 
 const KELVIN = 273;
-const key = "119330c3e5a71515ea22dd8eee604c01";
+const API_KEY = "119330c3e5a71515ea22dd8eee604c01";
 const weatherByDate = {};
 let today = new Date();
 today = getToday(today);
@@ -53,7 +53,7 @@ function showError(error){
 }
 
 function getWeather(latitude, longitude) {
-  let api = `//api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${key}`;
+  let api = `//api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`;
     
   fetch(api)
     .then(function(response){
@@ -113,11 +113,13 @@ const renderByDay = (dateCurrentDay) => {
 
 const changeCurrentActiveDay = (target) => {
   currentActiveDate.classList.remove('active');
+  // [3]
   const newActiveDate = target;
   newActiveDate.classList.add('active');
 };
 
 buttonDay1Element.addEventListener("click", function() {
+  // [2] - target vs currentTarget
   const targetDiv = event.currentTarget;
   dateCurrentDay = targetDiv.getAttribute('date');
   changeCurrentActiveDay(targetDiv);
