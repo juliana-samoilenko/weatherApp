@@ -12,8 +12,7 @@ const API_KEY = "119330c3e5a71515ea22dd8eee604c01";
 const weatherByDate = {};
 let city;
 let country;
-let today = new Date();
-today = getToday(today);
+const today = getToday(new Date());
 let allDays = [];
 let dateCurrentDay = '';
 
