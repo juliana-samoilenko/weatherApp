@@ -1,10 +1,9 @@
 {
   "name": "weatherapp",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "http-server"
   },
   "repository": {
     "type": "git",
@@ -15,5 +14,10 @@
   "bugs": {
     "url": "https://github.com/Lyashka/weatherApp/issues"
   },
-  "homepage": "https://github.com/Lyashka/weatherApp#readme"
+  "homepage": "https://github.com/Lyashka/weatherApp#readme",
+  "keywords": [],
+  "description": "",
+  "dependencies": {
+    "http-server": "^0.12.1"
+  }
 }
