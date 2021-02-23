@@ -7,14 +7,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Lyashka/weatherApp.git"
+    "url": "git+https://github.com/yuliana-samoylenko/weatherApp.git"
   },
-  "author": "lyashka",
+  "author": "Lyashka",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Lyashka/weatherApp/issues"
+    "url": "https://github.com/yuliana-samoylenko/weatherApp/issues"
   },
-  "homepage": "https://github.com/Lyashka/weatherApp#readme",
+  "homepage": "https://github.com/yuliana-samoylenko/weatherApp#readme",
   "keywords": [],
   "description": "",
   "dependencies": {
